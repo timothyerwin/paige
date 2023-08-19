@@ -9,7 +9,6 @@ This is a Node.js Typescript project
 npm install
 
 # yarn
-
 yarn install
 ```
 

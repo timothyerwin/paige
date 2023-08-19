@@ -76,4 +76,21 @@ app.put('/api/v1/products/:sku', async (req: Request, res: Response) => {
     console.error('Error updating product:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
+}); 
+
+app.delete('/api/v1/products/:sku', async (req: Request, res: Response) => {
+  const { sku } = req.params;
+
+  try {
+    const product = await prisma.products.delete({
+      where: {
+        sku: sku,
+      },
+    });
+
+    res.json({ message: 'success', product });
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 });
