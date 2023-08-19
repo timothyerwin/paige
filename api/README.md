@@ -14,27 +14,19 @@ yarn install
 
 ## Setup
 
-1. Prisma
-
 ```sh
-npx prisma generate
-npx prisma migrate dev --name initial
-```
-
-2. Import fixtures
-
-```sh
-npx ts-node setup
+# one time setup
+npm run init
 ```
 
 ## Run
 
 ```sh
-npx ts-node src/index.ts
+npm run start
 ```
 
 ## Test
 
 ```sh
-npx jest
+npm run test
 ```
