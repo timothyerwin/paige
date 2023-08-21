@@ -16,7 +16,7 @@ export default function Home() {
       </div>
 
       <a href="/dashboard/product-list" className={styles.card}>
-        <h2>
+        <h2 style={{color: 'white'}}>
           Click to start demo <span>-&gt;</span>
         </h2>
       </a>
