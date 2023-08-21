@@ -14,6 +14,7 @@ describe("Product Routes", () => {
     "test-sku-4",
     "test-sku-5",
     "test-sku-delete",
+    'test-sku-pink'
   ];
 
   afterAll(async () => {
@@ -39,6 +40,21 @@ describe("Product Routes", () => {
     });
   });
 
+  it('should retrieve products and filter data', async () => {
+    const response = await request(app).get('/api/v1/products');
+
+    expect(response.status).toBe(200);
+
+    expect(response.body.products).toBeDefined();
+    expect(response.body.products).toBeInstanceOf(Array);
+    expect(response.body.products.length).toBeGreaterThan(0);
+
+    expect(response.body.filters).toBeDefined();
+    expect(response.body.filters.colors).toBeDefined();
+    expect(response.body.filters.colors).toBeInstanceOf(Array);
+    expect(response.body.filters.colors.length).toBeGreaterThan(0);
+  });
+
   it("should get a product by SKU", async () => {
     const product = await prisma.products.create({
       data: {
@@ -57,6 +73,28 @@ describe("Product Routes", () => {
     expect(response.status).toBe(200);
     expect(response.body.sku).toBe("test-sku");
     expect(response.body.id).toBeDefined();
+  });
+
+  it('should create a product with test-pink color and query by color', async () => {
+    await prisma.products.create({
+      data: {
+        id: 'test-id-pink',
+        sku: 'test-sku-pink',
+        name: 'Test Product',
+        type: 'test-type',
+        description: 'Test description',
+        color: 'test-pink',
+        price: 100.0,
+      },
+    });
+
+    const response = await request(app).get(`/api/v1/products?color=test-pink`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('products'); 
+    expect(response.body.products).toHaveLength(1);
+    expect(response.body.products[0].sku).toBe('test-sku-pink');
+    expect(response.body.products[0].color).toBe('test-pink');
   });
 
   it("should update a product by SKU", async () => {

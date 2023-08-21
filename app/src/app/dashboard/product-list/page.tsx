@@ -9,7 +9,7 @@ import { Spin } from "antd";
 
 import { Product } from "shared/src/types";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Space, Table, Tag, Popconfirm, Modal, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
@@ -21,6 +21,11 @@ export default function ProductList() {
   const [data, setData] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState<Number>(1);
+  const [colorFilter, setColorFilter] = useState<string[]>([]);
+
+  const colorFilterRef = useRef<string[]>();
+
+  colorFilterRef.current = colorFilter;
 
   const onDelete = async (sku: string) => {
     try {
@@ -86,6 +91,7 @@ export default function ProductList() {
       },
       width: 100,
       align: "center",
+      filters: data?.filters?.colors.map((color: string) => ({text: color, value: color})) || [],
     },
     {
       title: "Type",
@@ -123,9 +129,16 @@ export default function ProductList() {
 
   const load = async (page: Number) => {
     try {
-        const response = await fetch(
-          `${API_HOST}/api/v1/products?page=${page}`
-        );
+
+        let url = `${API_HOST}/api/v1/products?page=${page}`;
+
+        console.log('CURRENT', colorFilterRef.current);
+
+        if(colorFilterRef.current && colorFilterRef.current.length > 0) {
+          url += `&color=${colorFilterRef.current.join(',')}`;
+        }
+
+        const response = await fetch(url);
 
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -143,7 +156,7 @@ export default function ProductList() {
 
   useEffect(() => {
     load(page);
-  }, [page]);
+  }, [page, colorFilter]);
 
   if (loading) {
     return (
@@ -168,6 +181,9 @@ export default function ProductList() {
         dataSource={data ? data.products : []}
         columns={columns}
         pagination={pagination}
+        onChange={((_, filters: any) => {
+          setColorFilter(filters.color);
+        })}
       />
     </div>
   );
