@@ -1,9 +1,4 @@
-interface Product {
-  price: number;
-  type: string;
-  description: string;
-  color: string;
-}
+import {Product} from '../types';
 
 export interface ProductValidationResult {
   field: keyof Product;

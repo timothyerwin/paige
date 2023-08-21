@@ -15,11 +15,10 @@ export default function Home() {
         />
       </div>
 
-      <a href="/products" className={styles.card}>
+      <a href="/dashboard/product-list" className={styles.card}>
         <h2>
-          Products <span>-&gt;</span>
+          Click to start demo <span>-&gt;</span>
         </h2>
-        <p>Click to browse products</p>
       </a>
     </main>
   );

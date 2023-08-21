@@ -30,3 +30,9 @@ npm run start
 ```sh
 npm run test
 ```
+
+## Browse Database
+
+```sh
+npx prisma studio
+```

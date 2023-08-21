@@ -80,13 +80,10 @@ describe("Product Routes", () => {
       price: 200.0,
     };
 
-    console.log(updatedData);
-
     const response = await request(app)
       .put(`/api/v1/products/${product.sku}`)
       .send(updatedData);
 
-    console.log(response.status, response.body);
     expect(response.status).toBe(200);
     expect(response.body.name).toBe("Test Product (updated)");
     expect(response.body.price).toBe(200.0);
@@ -211,7 +208,6 @@ describe("Product Routes", () => {
     expect(response.body.message).toBe("success");
     expect(response.body.product.sku).toBe("test-sku-delete");
 
-    // Verify that the product is actually deleted from the database
     const deleted = await prisma.products.findUnique({
       where: {
         sku: product.sku,

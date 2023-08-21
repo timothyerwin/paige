@@ -1,12 +1,13 @@
-// importFixtures.ts
 import { PrismaClient } from '../generated/client';
 import products from '../db/fixtures/products.json';
 
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.products.deleteMany();
+
   for (const product of products) {
-    await prisma.products.deleteMany();
+    console.log('creating product', product.sku);
     
     await prisma.products.create({
       data: product,

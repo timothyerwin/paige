@@ -17,7 +17,17 @@ app.get('/api/v1/products', async (req: Request, res: Response) => {
     skip,
     take: limit,
   });
-  
+
+  const formattedProducts = products.map(product => ({
+    ...product,
+    price_formatted: product.price.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }),
+  }));
+
   const total = await prisma.products.count();
   const pages = Math.ceil(total / limit);
   
@@ -26,7 +36,7 @@ app.get('/api/v1/products', async (req: Request, res: Response) => {
     limit,
     pages,
     total,
-    products,
+    products: formattedProducts,
   });
 });
 

@@ -1,0 +1,11 @@
+.section {
+    padding: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    flex: 1;
+    background: #eee;
+    height: 100vh;
+    width: 100vw;
+}

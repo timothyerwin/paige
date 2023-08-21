@@ -3,6 +3,8 @@ import { validate } from '../product';
 describe('Product Validation', () => {
   it('should return error messages for invalid product', () => {
     const product = {
+      id: 'test-id-1',
+      sku: 'test-sku-1',
       price: -10,
       type: '',
       description: 'This is a long description exceeding the maximum length.',
@@ -18,6 +20,8 @@ describe('Product Validation', () => {
 
   it('should return an empty array for valid product', () => {
     const product = {
+      id: 'test-id-1',
+      sku: 'test-sku-1',
       price: 50,
       type: 'item',
       description: 'Short description',
