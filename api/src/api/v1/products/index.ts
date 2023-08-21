@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '../../../../generated/client';
 
+import {validate, ProductValidationResult} from 'shared/src/validation/product'
+
 import app from '../../../server';
 
 const prisma = new PrismaClient();
@@ -52,6 +54,13 @@ app.get('/api/v1/products/:sku', async (req: Request, res: Response) => {
 app.put('/api/v1/products/:sku', async (req: Request, res: Response) => {
   const { sku } = req.params;
   const update = req.body;
+
+  const validations = validate(update);
+
+  if(validations.length > 0) {
+    res.status(400).json(validations);
+    return;
+  }
 
   try {
     const existing = await prisma.products.findUnique({

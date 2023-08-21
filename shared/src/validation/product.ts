@@ -5,13 +5,13 @@ interface Product {
   color: string;
 }
 
-interface ValidationResult {
+export interface ProductValidationResult {
   field: keyof Product;
   message: string;
 }
 
-export const validate = (product: Product): ValidationResult[] => {
-  const results: ValidationResult[] = [];
+export const validate = (product: Product): ProductValidationResult[] => {
+  const results: ProductValidationResult[] = [];
 
   if (!product) {
     throw new Error('product is required');
