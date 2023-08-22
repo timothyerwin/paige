@@ -48,7 +48,12 @@ app.get("/api/v1/products", async (req: Request, res: Response) => {
     distinct: ["color"],
   });
 
-  const total = await prisma.products.count();
+  const total = await prisma.products.count({
+    where: {
+      color: colorFilters ? { in: colorFilters } : undefined,
+    },
+  });
+  
   const pages = Math.ceil(total / limit);
 
   res.json({
